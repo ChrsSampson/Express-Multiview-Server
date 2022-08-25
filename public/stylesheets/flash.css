@@ -1,17 +1,30 @@
 .flash-container{
     height: 5em;
+    position: absolute;
+    bottom: 4em;
+    right:3em;
+    background-color: rgb(226, 226, 226);
+    display: flex;
+    align-items: center;
+    border-radius: .25em;
+    -webkit-box-shadow: 10px 10px 9px 4px rgba(0,0,0,0.43); 
+    box-shadow: 10px 10px 9px 4px rgba(0,0,0,0.43);
 }
 
 .flash{
-    position: relative;
-    top:1.25em;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap:1em;
     margin:0 3em;
     font-size: large;
 }
 
+.flash-color{
+    width: 1.5em;
+    height: 100%;
+    border-radius: .25em;
+}
 
 /* Colors */
 .flash-success{
@@ -23,6 +36,5 @@
 }
 
 .flash-error{
-    color:white;
     background-color: rgb(195, 0, 0);
 }

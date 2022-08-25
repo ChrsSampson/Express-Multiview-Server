@@ -27,15 +27,16 @@ router.post('/', passport.authenticate('local', {failureFlash: true, failureRedi
 
 
 // Register User Account
-router.post('/register', isLoggedIn, isAdmin, sendMail('new_user'), catchAsync( async (req, res) => {
+router.post('/register', catchAsync( async (req, res) => {
     try{
         const {username, email, password, role} = req.body;
-        const user = new User({username: username,email: email, role: role})
+        const user = new User({username, email, role})
         const registeredUser = await User.register(user, password);
         req.flash('success', 'User Created')
         res.redirect('/viewer')
     }
     catch(e){
+        console.log(e)
         req.flash('error', e.message)
         res.redirect('/login/register')
     }

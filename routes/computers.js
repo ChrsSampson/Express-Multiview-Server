@@ -18,7 +18,7 @@ router.get('/seed', isLoggedIn, (req,res, next) => {
   res.render('test/seed')
 })
 // Seed Database Router
-router.post('/seed', isLoggedIn, isAdmin, catchAsync(async (req, res, next) => {
+router.post('/seed', catchAsync(async (req, res, next) => {
   await plantSeeds()
   res.send('planted')
 }))
