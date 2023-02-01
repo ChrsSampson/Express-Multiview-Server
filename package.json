@@ -1,0 +1,19 @@
+{
+  "name": "multiviewer_2",
+  "version": "1.0.0",
+  "description": "PingPlotter Multiviewer API Services",
+  "main": "www.js",
+  "scripts": {
+    "test": "mocha --exit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChrsSampson/Express-Multiview-Server.git"
+  },
+  "author": "Chris Sampson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ChrsSampson/Express-Multiview-Server/issues"
+  },
+  "homepage": "https://github.com/ChrsSampson/Express-Multiview-Server#readme"
+}
