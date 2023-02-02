@@ -5,11 +5,7 @@ const bcrypt = require('bcrypt');
 
 
 const UserSchema = new Schema({
-    firstName: {
-        type: String,
-        required: false
-    },
-    lastName: {
+    displayName: {
         type: String,
         required: false
     },
@@ -26,6 +22,10 @@ const UserSchema = new Schema({
         type: String,
         required: true,
         default: 'user'
+    },
+    session: {
+        type:String,
+        required: false
     }
 });
 
