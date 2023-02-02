@@ -4,7 +4,8 @@
   "description": "PingPlotter Multiviewer API Services",
   "main": "www.js",
   "scripts": {
-    "test": "mocha --exit"
+    "dev": "nodemon -r dotenv/config www.js dotenv_config_path=./.env.development.local",
+    "test": "mocha ./tests --config=./mocharc.js --exit"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,19 @@
   "bugs": {
     "url": "https://github.com/ChrsSampson/Express-Multiview-Server/issues"
   },
-  "homepage": "https://github.com/ChrsSampson/Express-Multiview-Server#readme"
+  "homepage": "https://github.com/ChrsSampson/Express-Multiview-Server#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "mongoose": "^6.9.0",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "nodemon": "^2.0.20",
+    "supertest": "^6.3.3"
+  }
 }
