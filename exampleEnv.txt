@@ -1,0 +1,6 @@
+server is expecting .env.production.local file to exisit to configure enviroment
+Should look like this
+
+PORT=[PORT NUMBER]
+NODE_ENV=[development || production]
+MONGO_URI=mongodb://[ipaddres]:[port] - look up mongo connection URL for more info

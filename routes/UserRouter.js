@@ -2,7 +2,7 @@
 const express = require('express');
 const Response = require('../lib/Response');
 const asyncHandler = require('../lib/AsyncHandler');
-const {getAll, create, findById, deleteById} = require('../controllers/UserController');
+const {getAll, create, findById, deleteById, updateById} = require('../controllers/UserController');
 const { Router } = require('express');
 
 const router = Router();
@@ -52,6 +52,37 @@ router.get('/:id', asyncHandler ( async (req, res) => {
         const user = await findById(id)
         const response = new Response(200, 'Success', user, null)
         response.send(res)
+    } catch (err) {
+        next(err)
+    }
+}));
+
+// update user by id
+router.put('/:id', asyncHandler(async (req, res, next) => {
+    try{
+        const {id} = req.params
+        if(!id) {
+            const error = new Error('Missing Required Field (id)')
+            next(error)
+            return
+        }
+        const {username, displayName, session} = req.body;
+        if(!username) {
+            const error = new Error('Missing Required Field (username)')
+            next(error)
+            return
+        }
+
+        const userInfo = {
+            email: username,
+            displayName: displayName,
+            session: session
+        }
+
+        const r = await updateById(id, userInfo)
+        const response = new Response(200, 'Success', r, null)
+        response.send(res)
+
     } catch (err) {
         next(err)
     }

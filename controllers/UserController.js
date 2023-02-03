@@ -61,4 +61,19 @@ async function deleteById (id) {
     }
 }
 
-module.exports = {getAll, create, findById, deleteById}
+/*
+    *Update user by id
+    @param {string} id - User id
+    @param {object} data - User data
+    @returns {object} data - Updated User
+*/
+async function updateById (id, data) {
+    try{
+        const updatedUser = await User.findByIdAndUpdate(id, data)
+        return updatedUser
+    } catch (err) {
+        throw err
+    }
+}
+
+module.exports = {getAll, create, findById, deleteById, updateById}

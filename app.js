@@ -30,7 +30,7 @@ app.get('/test', (req,res) => {
 
 app.use('/api/auth', require('./routes/AuthRouter'));
 app.use('/api/users', require('./routes/UserRouter'))
-
+// app.use('/api/machines', )
 
 // catch all 404 handler
 app.use((req,res) => {
