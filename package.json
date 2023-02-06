@@ -4,6 +4,7 @@
   "description": "PingPlotter Multiviewer API Services",
   "main": "www.js",
   "scripts": {
+    "start": "node -r dotenv/config www.js dotenv_config_path=./.env.production.local",
     "dev": "nodemon -r dotenv/config www.js dotenv_config_path=./.env.development.local",
     "test": "mocha ./tests --config=./mocharc.js --exit"
   },

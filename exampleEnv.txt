@@ -4,3 +4,4 @@ Should look like this
 PORT=[PORT NUMBER]
 NODE_ENV=[development || production]
 MONGO_URI=mongodb://[ipaddres]:[port] - look up mongo connection URL for more info
+SESSION_SECRET=[something]

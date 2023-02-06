@@ -3,14 +3,15 @@ const session = require('express-session');
 const Response = require('./lib/Response');
 const dotenv = require('dotenv');
 
-dotenv.config({path: './.env.development.local'})
+// dotenv.config({path: './.env.development.local'})
 
-if(process.env.NODE_ENV !== 'production') {
-    const mongoose = require('mongoose');
-    mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true})
-    .then(() => console.log('Connected to MongoDB'))
-    .catch(err => console.log(err));
-} 
+// this is for testing purposes only
+// if(process.env.NODE_ENV !== 'production') {
+//     const mongoose = require('mongoose');
+//     mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true})
+//     .then(() => console.log('Connected to MongoDB'))
+//     .catch(err => console.log(err));
+// } 
 
 const app = express();
 
