@@ -17,7 +17,7 @@ const app = express();
 app.use(express.json())
 
 app.use(session({
-    secret:'changeme',
+    secret:process.env.SESSION_SECRET || 'spagettios',
     resave: false,
     saveUninitialized: true,
     cookie: { secure: true }
@@ -29,8 +29,8 @@ app.get('/test', (req,res) => {
 })
 
 app.use('/api/auth', require('./routes/AuthRouter'));
-app.use('/api/users', require('./routes/UserRouter'))
-// app.use('/api/machines', )
+app.use('/api/users', require('./routes/UserRouter'));
+app.use('/api/machines', require('./routes/MachineRouter'));
 
 // catch all 404 handler
 app.use((req,res) => {

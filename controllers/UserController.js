@@ -62,6 +62,21 @@ async function deleteById (id) {
 }
 
 /*
+    *Lookup user by key and value
+    @param {string} key - User key
+    @param {string} value - User value
+    @returns {object} data - User
+*/
+async function findOne (key, value) {
+    try{
+        const result = await User.findOne( {[key]: value} )
+        return result
+    } catch (err) {
+        throw err
+    }
+}
+
+/*
     *Update user by id
     @param {string} id - User id
     @param {object} data - User data
@@ -76,4 +91,4 @@ async function updateById (id, data) {
     }
 }
 
-module.exports = {getAll, create, findById, deleteById, updateById}
+module.exports = {getAll, create, findById, deleteById, updateById, findOne}
