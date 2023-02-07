@@ -1,15 +1,13 @@
 // user Crud Operations
 const User = require('../models/User');
+const Response = require('../lib/Response');
 
-
-/*
-    * Get all users
-    * @returns {Promise} - Promise object represents list of users
-*/
-async function getAll () {
+// get a list of all users
+async function getAll (req, res, next) {
     try{
-        const user = await User.find({});
-        return user;
+        const users = await User.find({});
+        const response = new Response(200, 'Success', users, null);
+        response.send(res)
     } catch(err) {
         throw err;
     }
@@ -24,10 +22,23 @@ async function getAll () {
     @param {String} data.lastName - last name
     @returns {Promise} - Promise object represents the created user
 */
-async function create (data) {
+async function create (req, res, next) {
     try{
-        const user = await User.create(data);
-        return user;
+        const {username, password, displayName} = req.body;
+        if(!username || !password) {
+            const error = new Error('Missing Required Field (username, password)')
+            next(error)
+        }
+
+        const userInfo = {
+            email: username,
+            password: password,
+            displayName: displayName
+        }
+        
+        const user = await User.create(userInfo);
+        const response = new Response(201, 'Success', user, null);
+        response.send(res);
     } catch(err) {
         throw err;
     }
@@ -38,10 +49,16 @@ async function create (data) {
     @param {string} id - User id
     @returns {object} data - User 
 */
-async function findById (id) {
+async function findById (req, res, next) {
     try{
+        const {id} = req.params
+        if(!id){
+            const error = new Error('Missing Required Field (id)')
+            next(error)
+        }
         const user = await User.findById(id)
-        return user
+        const response = new Response(200, 'Success', user, null)
+        response.send(res)
     } catch (err) {
         throw err
     }
@@ -52,10 +69,16 @@ async function findById (id) {
     @param {string} id - User id
     @returns {object} data - Deleted User 
 */
-async function deleteById (id) {
+async function deleteById (req, res, next) {
     try{
-        const result = await User.findByIdAndDelete(id)
-        return result
+        const {id} = req.params
+        if(!id) {
+            const error = new Error('Missing Required Field (id)')
+            next(error)
+        }
+        const r = await User.findByIdAndDelete(id)
+        const response = new Response(200, 'Success', r, null)
+        response.send(res)
     } catch (err) {
         throw err
     }
@@ -82,10 +105,30 @@ async function findOne (key, value) {
     @param {object} data - User data
     @returns {object} data - Updated User
 */
-async function updateById (id, data) {
+async function updateById (req, res, next) {
     try{
-        const updatedUser = await User.findByIdAndUpdate(id, data)
-        return updatedUser
+        const {id} = req.params
+        if(!id) {
+            const error = new Error('Missing Required Field (id)')
+            next(error)
+            return
+        }
+        const {username, displayName, session} = req.body;
+        if(!username) {
+            const error = new Error('Missing Required Field (username)')
+            next(error)
+            return
+        }
+
+        const userInfo = {
+            email: username,
+            displayName: displayName,
+            session: session
+        }
+
+        const r = await User.findByIdAndUpdate(id, userInfo)
+        const response = new Response(200, 'Success', r, null)
+        response.send(res)
     } catch (err) {
         throw err
     }

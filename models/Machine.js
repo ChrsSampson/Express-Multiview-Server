@@ -11,6 +11,12 @@ const MachineSchema = new Schema({
         type: String,
         required: true
     },
+    tag: {
+        type: String,
+        enum: ['Desktop Encoder', 'Laptop Encoder', 'Radius', 'Enclosure', 'untagged'],
+        required: false,
+        default: 'untagged'
+    },
     lastUpdated: {
         type: Date,
         required: false,

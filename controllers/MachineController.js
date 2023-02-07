@@ -1,46 +1,93 @@
 const Machine = require('../models/Machine');
+const Response = require('../lib/Response');
 
-async function create(data) {
+async function create(req, res, next ) {
     try {
-        const machine = new Machine(data);
-        await machine.save();
-        return machine;
+        const {name, link, tag} = req.body;
+
+        if(!name || !link) {
+            const err = new Error('Missing required fields (name, link)');
+            next(err);
+            return
+        }
+
+        const newMachine = await Machine.create({name, link, tag});
+        const response = new Response(201, 'Machine created', newMachine);
+        response.send(res);
     } catch (err) {
         throw err;
     }
 }
 
-async function findAll() {
+async function findAll(req, res, next) {
     try {
-        const machines = await Machine.find();
-        return machines;
+        const {tag} = req.body;
+        if(tag) {
+            const machines = await Machines.find({tag});
+            const response = new Response(200, 'Machines found', machines);
+            response.send(res);
+            return;
+        }
+        const machines = await Machine.find({})
+        const response = new Response(200, 'Machines found', machines);
+        response.send(res);
     } catch (err) {
         throw err;
     }
 }
 
-async function findById(id) {
+async function findById(req, res, next) {
    try {
-        const machine = await Machine.findById(id);
-        return machine;
+        const {id} = req.params;
+        if(!id) {
+            const err = new Error('Missing required fields (id)');
+            next(err);
+            return
+        }
+
+        const result = await Machine.findById(id);
+        const response = new Response(200, 'Machine found', result);
+        response.send(res);
    } catch (err) {
         throw err;
    }
 }
 
-async function updateById(id, data = {}) {
+async function updateById(req, res ,next) {
     try {
-        const machine = await Machine.findByIdAndUpdate(id, data, {new: true});
-        return machine;
+        const {id} = req.params;
+
+        if(!id) {
+            const err = new Error('Missing required fields (id)');
+            next(err);
+            return
+        }
+
+        const {name, link, tag} = req.body;
+
+        const info = {name, link, tag};
+
+        const updatedMachine = await Machine.findByIdAndUpdate(id, info, {new: true});
+        const response = new Response(200, 'Machine updated', updatedMachine);
+        response.send(res);
     } catch(err){
         throw err;
     }
 }
 
-async function deleteById(id) {
+async function deleteById(req, res, next) {
     try {
-        const machine = await Machine.findByIdAndDelete(id);
-        return machine;
+        const {id} = req.params;
+
+        if(!id) {
+            const err = new Error('Missing required fields (id)');
+            next(err);
+            return
+        }
+
+        const deletedMachine = await Machine.findByIdAndDelete(id);
+        const response = new Response(200, 'Machine deleted', deletedMachine);
+        response.send(res);
     } catch(err){
         throw err;
     }
