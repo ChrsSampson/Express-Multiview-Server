@@ -4,6 +4,7 @@ const Response = require('../lib/Response');
 const asyncHandler = require('../lib/AsyncHandler');
 const {getAll, create, findById, deleteById, updateById} = require('../controllers/UserController');
 const { Router } = require('express');
+const privilegeCheck = require('../middleware/privilegeCheck');
 
 const router = Router();
 
@@ -17,7 +18,7 @@ router.get('/', asyncHandler( async (req,res, next) => {
 }));
 
 // create a new user
-router.post('/', asyncHandler( async (req, res, next) => {
+router.post('/', privilegeCheck, asyncHandler( async (req, res, next) => {
     try{
         create(req, res, next);
     } catch(err) {
@@ -45,7 +46,7 @@ router.put('/:id', asyncHandler(async (req, res, next) => {
 }));
 
 // delete user by id
-router.delete('/:id', asyncHandler(async (req, res, next) => {
+router.delete('/:id', privilegeCheck, asyncHandler(async (req, res, next) => {
     try{
         deleteById(req, res, next);
     } catch (err) {

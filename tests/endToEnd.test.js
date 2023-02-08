@@ -3,6 +3,7 @@ const chai = require('chai');
 const expect = chai.expect;
 const request = require('supertest');
 const dotenv = require('dotenv');
+const cookieJar = request('cookieJar')
 
 const app = require('../app');
 
@@ -11,8 +12,9 @@ dotenv.config({path: './.env.development.local'});
 const seeder = require('../util/seeder');
 const User = require('../models/User');
 const Machine = require('../models/Machine');
+const req = require('express/lib/request');
 
-describe('User API', () => {
+describe.only('User API', () => {
     let createdUserId = null
 
     // setup and cleanup
@@ -26,6 +28,24 @@ describe('User API', () => {
                 done();
             })
             .catch(err => {
+                done(err);
+            });
+    });
+
+    beforeEach((done) => {
+        request(app)
+            .post('/api/auth/login')
+            .send({
+                username: 'a@test.com',
+                password: 'admin'
+            })
+            .expect('Content-Type', /json/)
+            .expect(res => {
+                console.log(res.getCookies)
+                res.body.message === 'Login Successful'
+            })
+            .end((err, res) => {
+                if(err) throw err;
                 done(err);
             });
     });
@@ -146,7 +166,7 @@ describe('User API', () => {
 
 });
  
-describe.only('Machine API', () => {
+describe('Machine API', () => {
     let createdId = null;
     let currentName = null;
 
@@ -294,15 +314,10 @@ describe('Auth API', () => {
 
     after((done) => {
         // remove the created user
-        request(app)
-            .delete(`/api/users/${createdUserId}`)
-            .expect(res => {
-                console.log(res.body)
-            })
-            .end((err, res) => {
-                if(err) throw err;
-                done()
-            })
+        User.deleteMany({}, (err) => {
+            if(err) throw err;
+            done()
+        });
     });
 
     it('Should be able to create a user', async () => {
@@ -339,7 +354,7 @@ describe('Auth API', () => {
                 console.log(res.body)
                 res.status.message === 'Login Successful'
                 res.body.data._id === createdUserId
-                res.body.data.email === 'AuthBoi'
+
             })
             .end((err, res) => {
                 if(err) throw err;

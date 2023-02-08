@@ -6,7 +6,7 @@ const router = express.Router();
 
 const  {login, logout, resetPassword} = require('../controllers/AuthController');
 
-
+//  api/auth/login
 router.post('/login', asyncHandler( async (req,res, next) => {
     try{
         const {username, password} = req.body;
@@ -20,7 +20,7 @@ router.post('/login', asyncHandler( async (req,res, next) => {
         const result = await login(username, password);
 
         // set a cookie with the session id
-        res.cookie('session', result.session, {expires: new Date(Date.now()+ 90000),httpOnly: true, secure: true});
+        res.cookie('session', result.session, {expires: new Date(Date.now()+ 90000), httpOnly: true});
 
         const response = new Response(200, 'Login Successful', result, null);
         response.send(res);
@@ -32,13 +32,14 @@ router.post('/login', asyncHandler( async (req,res, next) => {
 
 router.post('/logout', asyncHandler( async (req,res, next) => {
     try{
-        const {id} = req.body;
-        if (id) {
-            const result = await logout(id);
+        const {session} = req.cookies;
+        if (session) {
+            const result = await logout(session);
+            res.clearCookie('session');
             const response = new Response(200, 'Logout Successful', result, null);
             response.send(res);
         } else {
-            throw new Error('Missing Required Field (id)');
+            throw new Error('Missing Required Field (Active Session)');
         }
     } catch (err) {
         throw err

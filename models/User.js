@@ -25,7 +25,8 @@ const UserSchema = new Schema({
     },
     session: {
         type:String,
-        required: false
+        required: false,
+        default: null
     }
 });
 
@@ -40,8 +41,8 @@ UserSchema.pre('save', function(next) {
 });
 
 UserSchema.method('comparePassword',  async function(plainPassword) {
-    const user = this;
-    const match = await bcrypt.compare(plainPassword, user.password);
+    // compare plainPassword with hashed password
+    const match = await bcrypt.compare(plainPassword, this.password);
     return match;
 });
 

@@ -1,20 +1,25 @@
-const bycrpyt = require('bcrypt');
-const {getAll, create, findById, deleteById, updateById, findOne} = require('./UserController');
+const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const {v4} = require('uuid');
+
 async function login (username, plainPassword) {
     try{
     // find user in database
-        const user = await findOne('username', username);
+        const user = await User.find({'username': username});
+        if(user.session){
+            throw new Error('User already logged in');
+        }
+
     // compare plainPassword with hashed password
-        const u = new User(user); // a bit scuffed, doing this in order to use class methods
+        const u = new User(user[0]); // a bit scuffed, doing this in order to use class methods
+
         if(user){
-            const match = await u.comparePassword(plainPassword, user.password);
+            const match = await u.comparePassword(plainPassword);
      // if match, create user session
             if(match) {
                 // generate session id with UUID  
                 const session = v4();
-                const updatedUser = await updateById(user._id, {session});
+                const updatedUser = await User.findByIdAndUpdate(u._id, {session}, {new: true});
                 return updatedUser;
             } else {
                 throw new Error('Invalid username or password');
@@ -30,9 +35,9 @@ async function login (username, plainPassword) {
 async function logout (session) {
     try{
         // find user by session 
-        const user = await findOne('session', session);
+        const user = await User.find({'session': session});
         // delete session
-        const updatedUser = await updateById(user._id, {session: null});
+        const updatedUser = await User.findByIdAndUpdate(user._id, {session: null});
         return updatedUser;
     } catch (err) {
         throw err;
