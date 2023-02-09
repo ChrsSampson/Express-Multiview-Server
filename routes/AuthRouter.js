@@ -48,7 +48,7 @@ router.post('/logout', asyncHandler( async (req,res, next) => {
 
 // gets the currently logged in user
 router.get('/me', asyncHandler( async (req,res, next) => {
-
+    res.send('Not Implemented');
 }));
 
 // router 404 handler

@@ -1,7 +1,6 @@
 const express = require('express');
 const session = require('express-session');
 const Response = require('./lib/Response');
-const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
 const authCheck = require('./middleware/authCheck');
 

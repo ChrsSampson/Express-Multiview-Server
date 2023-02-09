@@ -2,7 +2,7 @@
 const express = require('express');
 const Response = require('../lib/Response');
 const asyncHandler = require('../lib/AsyncHandler');
-const {getAll, create, findById, deleteById, updateById} = require('../controllers/UserController');
+const {getAll, create, findById, deleteById, updateById, findMe} = require('../controllers/UserController');
 const { Router } = require('express');
 const privilegeCheck = require('../middleware/privilegeCheck');
 
@@ -22,6 +22,15 @@ router.post('/', privilegeCheck, asyncHandler( async (req, res, next) => {
     try{
         create(req, res, next);
     } catch(err) {
+        next(err)
+    }
+}));
+
+// get currently logged in user based on  active session
+router.get('/me', asyncHandler( async (req,res, next) => {
+    try{
+        findMe(req, res, next);
+    } catch (err) {
         next(err)
     }
 }));

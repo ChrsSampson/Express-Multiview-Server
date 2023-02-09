@@ -85,15 +85,32 @@ async function deleteById (req, res, next) {
 }
 
 /*
-    *Lookup user by key and value
-    @param {string} key - User key
-    @param {string} value - User value
-    @returns {object} data - User
+    *Lookup user by session cookie
 */
-async function findOne (key, value) {
+async function findMe (req,res, next) {
     try{
-        const result = await User.findOne( {[key]: value} )
-        return result
+        const {session} = req.cookies
+        if(!session) {
+            const error = new Error('Missing Required Field (session)')
+            next(error)
+        }
+
+        const result = await User.findOne({session: session})
+        if(!result) {
+            const error = new Error('User does not have active session')
+            next(error)
+        }
+
+        const userInfo = {
+            email: result.email,
+            displayName: result.displayName,
+            role: result.role,
+            _id: result._id
+        }
+
+        const response = new Response(200, 'Success', userInfo , null)
+        response.send(res)
+
     } catch (err) {
         throw err
     }
@@ -134,4 +151,4 @@ async function updateById (req, res, next) {
     }
 }
 
-module.exports = {getAll, create, findById, deleteById, updateById, findOne}
+module.exports = {getAll, create, findById, deleteById, updateById, findMe}
