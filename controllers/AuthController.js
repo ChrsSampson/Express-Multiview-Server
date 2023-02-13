@@ -7,7 +7,8 @@ async function login (username, plainPassword) {
     // find user in database
         const user = await User.findOne({'email': username});
         if(user.session){
-            throw new Error('User already logged in');
+            // respond with existing session
+            return user;
         }
 
     // compare plainPassword with hashed password
@@ -17,7 +18,7 @@ async function login (username, plainPassword) {
             const match = await u.comparePassword(plainPassword);
      // if match, create user session
             if(match) {
-                // generate session id with UUID  
+                // generate session id with UUID
                 const session = v4();
                 const updatedUser = await User.findByIdAndUpdate(u._id, {session}, {new: true});
                 return updatedUser;
@@ -34,14 +35,14 @@ async function login (username, plainPassword) {
 
 async function logout (session) {
     try{
-        // find user by session 
+        // find user by session
         const user = await User.findOneAndUpdate({'session': session}, {session: null}, {new: true});
         // delete session
         return user;
     } catch (err) {
         throw err;
     }
-    
+
 }
 
 function resetPassword (id, plainPassword) {

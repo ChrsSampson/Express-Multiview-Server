@@ -5,7 +5,7 @@ const Response = require('../lib/Response');
 // get a list of all users
 async function getAll (req, res, next) {
     try{
-        const users = await User.find({});
+        const users = await User.find();
         const response = new Response(200, 'Success', users, null);
         response.send(res)
     } catch(err) {
@@ -36,7 +36,7 @@ async function create (req, res, next) {
             displayName: displayName,
             role: role
         }
-        
+
         const user = await User.create(userInfo);
         const response = new Response(201, 'Success', user, null);
         response.send(res);
@@ -48,7 +48,7 @@ async function create (req, res, next) {
 /*
     *Lookup user by id
     @param {string} id - User id
-    @returns {object} data - User 
+    @returns {object} data - User
 */
 async function findById (req, res, next) {
     try{
@@ -68,7 +68,7 @@ async function findById (req, res, next) {
 /*
     *Delete user by id
     @param {string} id - User id
-    @returns {object} data - Deleted User 
+    @returns {object} data - Deleted User
 */
 async function deleteById (req, res, next) {
     try{
