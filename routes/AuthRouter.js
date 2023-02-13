@@ -35,7 +35,7 @@ router.post('/logout', asyncHandler( async (req,res, next) => {
         const {session} = req.cookies;
         if (session) {
             const result = await logout(session);
-            res.clearCookie('session');
+            res.cookie('session', '', {expires: new Date(Date.now()), httpOnly: true});
             const response = new Response(200, 'Logout Successful', result, null);
             response.send(res);
         } else {

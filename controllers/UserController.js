@@ -24,7 +24,7 @@ async function getAll (req, res, next) {
 */
 async function create (req, res, next) {
     try{
-        const {username, password, displayName} = req.body;
+        const {username, password, displayName, role} = req.body;
         if(!username || !password) {
             const error = new Error('Missing Required Field (username, password)')
             next(error)
@@ -33,7 +33,8 @@ async function create (req, res, next) {
         const userInfo = {
             email: username,
             password: password,
-            displayName: displayName
+            displayName: displayName,
+            role: role
         }
         
         const user = await User.create(userInfo);

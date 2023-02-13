@@ -5,13 +5,13 @@ const {v4} = require('uuid');
 async function login (username, plainPassword) {
     try{
     // find user in database
-        const user = await User.find({'username': username});
+        const user = await User.findOne({'email': username});
         if(user.session){
             throw new Error('User already logged in');
         }
 
     // compare plainPassword with hashed password
-        const u = new User(user[0]); // a bit scuffed, doing this in order to use class methods
+        const u = new User(user); // a bit scuffed, doing this in order to use class methods
 
         if(user){
             const match = await u.comparePassword(plainPassword);
@@ -35,10 +35,9 @@ async function login (username, plainPassword) {
 async function logout (session) {
     try{
         // find user by session 
-        const user = await User.find({'session': session});
+        const user = await User.findOneAndUpdate({'session': session}, {session: null}, {new: true});
         // delete session
-        const updatedUser = await User.findByIdAndUpdate(user._id, {session: null});
-        return updatedUser;
+        return user;
     } catch (err) {
         throw err;
     }
