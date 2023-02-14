@@ -45,7 +45,7 @@ router.get('/:id', asyncHandler ( async (req, res, next) => {
 }));
 
 // update user by id
-router.put('/:id', asyncHandler(async (req, res, next) => {
+router.put('/:id',  privilegeCheck, asyncHandler(async (req, res, next) => {
     try{
         updateById(req, res, next);
     } catch (err) {

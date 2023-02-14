@@ -131,7 +131,7 @@ async function updateById (req, res, next) {
             next(error)
             return
         }
-        const {username, displayName, session} = req.body;
+        const {username, displayName, role, session} = req.body;
         if(!username) {
             const error = new Error('Missing Required Field (username)')
             next(error)
@@ -141,7 +141,8 @@ async function updateById (req, res, next) {
         const userInfo = {
             email: username,
             displayName: displayName,
-            session: session
+            session: session,
+            role: role
         }
 
         const r = await User.findByIdAndUpdate(id, userInfo)
