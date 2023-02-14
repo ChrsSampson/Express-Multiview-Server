@@ -19,8 +19,8 @@ router.post('/login', asyncHandler( async (req,res, next) => {
 
         const result = await login(username, password);
 
-        // set a cookie with the session id
-        res.cookie('session', result.session, {expires: new Date(Date.now()+ 90000), httpOnly: true});
+        // set a cookie with the session id - 24 hours
+        res.cookie('session', result.session, {expires: new Date(Date.now() + (60 * 60 * 24 * 1000)), httpOnly: true});
 
         const response = new Response(200, 'Login Successful', result, null);
         response.send(res);
@@ -28,7 +28,7 @@ router.post('/login', asyncHandler( async (req,res, next) => {
     } catch (err) {
         next(err);
     }
-}));  
+}));
 
 router.post('/logout', asyncHandler( async (req,res, next) => {
     try{

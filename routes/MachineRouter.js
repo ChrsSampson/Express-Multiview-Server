@@ -2,13 +2,21 @@ const express = require('express');
 const router = express.Router();
 const asyncHandler = require('../lib/asyncHandler');
 
-const { findAll, findById, create, updateById, deleteById } = require('../controllers/MachineController');
+const { findAll, findById, create, updateById, deleteById, findByTag } = require('../controllers/MachineController');
 
 
 // @route   GET api/machines
 router.get('/', asyncHandler( async (req, res, next) => {
     try{
         await findAll(req, res, next);
+    } catch (err) {
+        next(err);
+    }
+}));
+
+router.get('/tag/:tag', asyncHandler( async (req, res, next) => {
+    try{
+        await findByTag(req, res, next);
     } catch (err) {
         next(err);
     }

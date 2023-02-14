@@ -21,17 +21,27 @@ async function create(req, res, next ) {
 
 async function findAll(req, res, next) {
     try {
-        const {tag} = req.body;
-        if(tag) {
-            const machines = await Machines.find({tag});
-            const response = new Response(200, 'Machines found', machines);
-            response.send(res);
-            return;
-        }
         const machines = await Machine.find({})
         const response = new Response(200, 'Machines found', machines);
         response.send(res);
     } catch (err) {
+        throw err;
+    }
+}
+
+async function findByTag(req, res, next) {
+    try{
+        const { tag } = req.params
+        if(!tag) {
+            const err = new Error('Missing required fields (tag)');
+            next(err);
+            return
+        } else {
+            const machines = await Machine.find({tag: tag});
+            const response = new Response(200, 'Machines found', machines);
+            response.send(res);
+        }
+    } catch(err) {
         throw err;
     }
 }
@@ -93,4 +103,4 @@ async function deleteById(req, res, next) {
     }
 }
 
-module.exports = { findAll, findById, create, updateById, deleteById }
+module.exports = { findAll, findById, create, updateById, deleteById, findByTag }
