@@ -2,14 +2,14 @@
 Description=Multiviewer API Service
 
 [Service]
-ExecStart=/var/www.js
+ExecStart=/www.js
 Restart=always
-User=nobody
+User=mv
 # Note Debian/Ubuntu uses 'nogroup', RHEL/Fedora uses 'nobody'
 Group=nogroup
 Environment=PATH=/usr/bin:/usr/local/bin
 Environment=NODE_ENV=production
-WorkingDirectory=/var/Express-Multiview-Server
+WorkingDirectory=/home/mv/Express-Multiview-Server
 
 [Install]
 WantedBy=multi-user.target
